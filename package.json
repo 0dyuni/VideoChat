@@ -1,0 +1,11 @@
+{
+  "name": "zoom",
+  "version": "1.0.0",
+  "description": "Using webRTC, websocket",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
