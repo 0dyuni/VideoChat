@@ -18,10 +18,16 @@ const server = http.createServer(app);
 // websocat server
 const wss = new WebSocket.Server({ server });
 
-function wssConnention(socket) {
-  console.log(socket);
-}
-
-wss.on("connection", wssConnention);
+// socket === 연결된 브라우저
+wss.on("connection", (socket) => {
+  console.log("브라우져와 연결. ✅");
+  socket.on("close", () => {
+    console.log("브라우져와 연결이 끊김.❌");
+  });
+  socket.on("message", (message) => {
+    console.log(message.toString("utf8"));
+  });
+  socket.send("안녕하세요");
+});
 
 server.listen(3030, connectListen);
