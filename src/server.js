@@ -1,6 +1,7 @@
 import http from "http";
 import WebSocket from "ws";
 import express from "express";
+import { Socket } from "dgram";
 
 const app = express();
 
@@ -18,16 +19,18 @@ const server = http.createServer(app);
 // websocat server
 const wss = new WebSocket.Server({ server });
 
+const sockets = [];
+
 // socket === 연결된 브라우저
 wss.on("connection", (socket) => {
+  sockets.push(socket);
   console.log("브라우져와 연결. ✅");
   socket.on("close", () => {
     console.log("브라우져와 연결이 끊김.❌");
   });
   socket.on("message", (message) => {
-    console.log(message.toString("utf8"));
+    sockets.forEach((aSocket) => aSocket.send(message.toString()));
   });
-  socket.send("안녕하세요");
 });
 
 server.listen(3030, connectListen);
