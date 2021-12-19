@@ -10,8 +10,11 @@ html
         header 
             h1 Video Chat 
         main
+            form#nick
+                input(type="text", placeholder="닉네임 입력", required)
+                button 저장
             ul
-            form
+            form#message
                 input(type="text", placeholder="메세지 입력", required)
                 button 보내기
         script(src="/public/js/app.js")

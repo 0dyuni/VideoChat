@@ -34,3 +34,6 @@ wss.on("connection", (socket) => {
 });
 
 server.listen(3030, connectListen);
+
+{
+}
