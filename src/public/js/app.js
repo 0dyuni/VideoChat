@@ -1,7 +1,6 @@
-const massageList = document.querySelector("ul");
+const messageList = document.querySelector("ul");
 const nickForm = document.querySelector("#nick");
 const messageForm = document.querySelector("#message");
-// socket === 서버로의 연결
 const socket = new WebSocket(`ws://${window.location.host}`);
 
 function makeMessage(type, payload) {
@@ -9,18 +8,20 @@ function makeMessage(type, payload) {
   return JSON.stringify(msg);
 }
 
-socket.addEventListener("open", () => {
-  console.log("서버와 연결.✅");
-});
+function handleOpen() {
+  console.log("서버와 연결 ✅");
+}
+
+socket.addEventListener("open", handleOpen);
 
 socket.addEventListener("message", (message) => {
   const li = document.createElement("li");
   li.innerText = message.data;
-  massageList.append(li);
+  messageList.append(li);
 });
 
 socket.addEventListener("close", () => {
-  console.log("서버와 연결이 끊김.❌");
+  console.log("서버와 연결끊김 ❌");
 });
 
 function handleSubmit(event) {
@@ -33,7 +34,8 @@ function handleSubmit(event) {
 function handleNickSubmit(event) {
   event.preventDefault();
   const input = nickForm.querySelector("input");
-  socket.send(makeMessage("nikename", input.value));
+  socket.send(makeMessage("nickname", input.value));
+  input.value = "";
 }
 
 messageForm.addEventListener("submit", handleSubmit);
