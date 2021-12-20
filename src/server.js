@@ -2,7 +2,6 @@ import http from "http";
 // import WebSocket from "ws";
 import SocketIo from "socket.io";
 import express from "express";
-import { Socket } from "dgram";
 
 const app = express();
 
@@ -17,7 +16,12 @@ const wsSever = SocketIo(httpServer);
 // const wss = new WebSocket.Server({ server });
 
 wsSever.on("connection", (socket) => {
-  console.log(socket);
+  socket.on("enter_room", (msg, done) => {
+    console.log(msg);
+    setTimeout(() => {
+      done();
+    }, 10000);
+  });
 });
 
 // function onSocketClose() {

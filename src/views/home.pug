@@ -10,5 +10,9 @@ html(lang="en")
         header
             h1 Video Chat
         main
+            div#welcome
+                form
+                    input(placeholder="채팅방 입력", required, type="text")
+                    button 입장
         script(src="/socket.io/socket.io.js") 
         script(src="/public/js/app.js") 
