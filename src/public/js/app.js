@@ -33,5 +33,9 @@ function handleRoomSubmit(event) {
 form.addEventListener("submit", handleRoomSubmit);
 
 socket.on("welcome", () => {
-  addMessage("새로운 유져가 입장했습니다!!");
+  addMessage("새로운 유저가 입장했습니다!!");
+});
+
+socket.on("bye", () => {
+  addMessage("유저가 나갔습니다.");
 });
