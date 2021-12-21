@@ -27,6 +27,10 @@ wsSever.on("connection", (socket) => {
   socket.on("disconnecting", () => {
     socket.rooms.forEach((room) => socket.to(room).emit("bye"));
   });
+  socket.on("new_message", (msg, room, done) => {
+    socket.to(room).emit("new_message", msg);
+    done();
+  });
 });
 
 // function onSocketClose() {
