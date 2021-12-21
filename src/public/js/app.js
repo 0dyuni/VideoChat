@@ -52,12 +52,12 @@ function handleRoomSubmit(event) {
 
 form.addEventListener("submit", handleRoomSubmit);
 
-socket.on("welcome", () => {
-  addMessage("새로운 유저가 입장했습니다!!");
+socket.on("welcome", (user) => {
+  addMessage(`${user} 님이 입장했습니다.`);
 });
 
-socket.on("bye", () => {
-  addMessage("유저가 나갔습니다.");
+socket.on("bye", (left) => {
+  addMessage(`${left} 님이 나갔습니다.`);
 });
 
 socket.on("new_message", addMessage);
