@@ -20,10 +20,11 @@ wsSever.on("connection", (socket) => {
   socket.onAny((event) => {
     console.log(`Socket Event:${event}`);
   });
-  socket.on("enter_room", (roomName, done) => {
+  socket.on("enter_room", (roomName, nickname, done) => {
+    socket["nickname"] = nickname;
     socket.join(roomName);
-    done();
     socket.to(roomName).emit("welcome", socket.nickname);
+    done();
   });
   socket.on("disconnecting", () => {
     socket.rooms.forEach((room) =>

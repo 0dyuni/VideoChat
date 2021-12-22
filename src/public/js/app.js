@@ -44,10 +44,13 @@ function showRoom() {
 
 function handleRoomSubmit(event) {
   event.preventDefault();
-  const input = form.querySelector("input");
-  socket.emit("enter_room", input.value, showRoom);
-  roomName = input.value;
-  input.value = "";
+  const roomNameInput = form.querySelector("#roomName");
+  const nickNameInput = form.querySelector("#name");
+  socket.emit("enter_room", roomNameInput.value, nickNameInput.value, showRoom);
+  roomName = roomNameInput.value;
+  roomNameInput.value = "";
+  const changeNameInput = room.querySelector("#name input");
+  changeNameInput.value = nickNameInput.value;
 }
 
 form.addEventListener("submit", handleRoomSubmit);
