@@ -17,10 +17,11 @@ const wsSever = SocketIo(httpServer);
 
 function publicRooms() {
   const {
-    socket: {
+    sockets: {
       adapter: { sids, rooms },
     },
   } = wsSever;
+
   const publicRooms = [];
   rooms.forEach((_, key) => {
     if (sids.get(key) === undefined) {
@@ -38,13 +39,17 @@ wsSever.on("connection", (socket) => {
   socket.on("enter_room", (roomName, nickname, done) => {
     socket["nickname"] = nickname;
     socket.join(roomName);
-    socket.to(roomName).emit("welcome", socket.nickname);
     done();
+    socket.to(roomName).emit("welcome", socket.nickname);
+    wsSever.sockets.emit("room_change", publicRooms());
   });
   socket.on("disconnecting", () => {
     socket.rooms.forEach((room) =>
       socket.to(room).emit("bye", socket.nickname)
     );
+  });
+  socket.on("disconnect", () => {
+    wsSever.sockets.emit("room_change", publicRooms());
   });
   socket.on("new_message", (msg, room, done) => {
     socket.to(room).emit("new_message", `${socket.nickname}: ${msg}`);
