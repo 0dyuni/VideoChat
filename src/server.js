@@ -15,6 +15,21 @@ const httpServer = http.createServer(app);
 const wsSever = SocketIo(httpServer);
 // const wss = new WebSocket.Server({ server });
 
+function publicRooms() {
+  const {
+    socket: {
+      adapter: { sids, rooms },
+    },
+  } = wsSever;
+  const publicRooms = [];
+  rooms.forEach((_, key) => {
+    if (sids.get(key) === undefined) {
+      publicRooms.push(key);
+    }
+  });
+  return publicRooms;
+}
+
 wsSever.on("connection", (socket) => {
   socket["nickname"] = "익명";
   socket.onAny((event) => {
