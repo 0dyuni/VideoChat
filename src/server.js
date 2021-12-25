@@ -33,6 +33,7 @@ function publicRooms() {
 
 wsSever.on("connection", (socket) => {
   socket["nickname"] = "익명";
+  wsSever.sockets.emit("room_change", publicRooms());
   socket.onAny((event) => {
     console.log(`Socket Event:${event}`);
   });
