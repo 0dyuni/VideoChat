@@ -31,6 +31,10 @@ function publicRooms() {
   return publicRooms;
 }
 
+function countRoom(roomName) {
+  return wsSever.sockets.adapter.rooms.get(roomName)?.size;
+}
+
 wsSever.on("connection", (socket) => {
   socket["nickname"] = "익명";
   wsSever.sockets.emit("room_change", publicRooms());
@@ -41,12 +45,12 @@ wsSever.on("connection", (socket) => {
     socket["nickname"] = nickname;
     socket.join(roomName);
     done();
-    socket.to(roomName).emit("welcome", socket.nickname);
+    socket.to(roomName).emit("welcome", socket.nickname, countRoom(roomName));
     wsSever.sockets.emit("room_change", publicRooms());
   });
   socket.on("disconnecting", () => {
     socket.rooms.forEach((room) =>
-      socket.to(room).emit("bye", socket.nickname)
+      socket.to(room).emit("bye", socket.nickname, countRoom(room) - 1)
     );
   });
   socket.on("disconnect", () => {
